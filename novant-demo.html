@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novant Health — Clinical Operations Intelligence · Indicative Demo</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5F5F7;
+  --card: #FFFFFF;
+  --border: rgba(0,0,0,0.07);
+  --border-light: rgba(0,0,0,0.04);
+  --text: #1D1D1F;
+  --text-secondary: #424245;
+  --text-dim: #6E6E73;
+  --text-muted: #86868B;
+  --brand: #0F766E;
+  --brand-light: rgba(15,118,110,0.08);
+  --brand-mid: rgba(15,118,110,0.15);
+  --green: #10B981;
+  --green-bg: rgba(16,185,129,0.08);
+  --amber: #F59E0B;
+  --amber-bg: rgba(245,158,11,0.08);
+  --red: #EF4444;
+  --red-bg: rgba(239,68,68,0.08);
+  --blue: #3B82F6;
+  --blue-bg: rgba(59,130,246,0.08);
+  --purple: #8B5CF6;
+  --purple-bg: rgba(139,92,246,0.08);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.06), 0 4px 6px -4px rgba(0,0,0,0.04);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:var(--font); background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:rgba(0,0,0,0.12); border-radius:10px; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+@keyframes spin { to { transform:rotate(360deg); } }
+@keyframes shimmer { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
+
+.header {
+  background:rgba(255,255,255,0.8);
+  border-bottom:1px solid var(--border);
+  padding:0 40px; height:60px;
+  display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:100;
+  backdrop-filter:blur(20px);
+}
+.logo { display:flex; align-items:center; gap:10px; }
+.logo-mark { width:28px; height:28px; background:var(--brand); border-radius:8px; display:flex; align-items:center; justify-content:center; }
+.logo-mark svg { width:16px; height:16px; fill:white; }
+.logo-name { font-size:15px; font-weight:700; letter-spacing:-0.3px; }
+.logo-div { width:1px; height:18px; background:var(--border); margin:0 12px; }
+.logo-product { font-size:13px; font-weight:600; color:var(--brand); }
+.header-right { display:flex; align-items:center; gap:10px; }
+.nav-tabs { display:flex; background:#F3F4F6; border-radius:10px; padding:3px; gap:2px; }
+.nav-tab { padding:6px 16px; border-radius:8px; border:none; background:transparent; color:var(--text-muted); cursor:pointer; font-size:13px; font-weight:500; font-family:var(--font); transition:all 0.2s; white-space:nowrap; }
+.nav-tab.active { background:#fff; color:var(--text); box-shadow:var(--shadow-sm); font-weight:600; }
+.indicative-badge { display:flex; align-items:center; gap:5px; padding:5px 12px; border-radius:20px; background:var(--amber-bg); font-size:11px; font-weight:600; color:var(--amber); text-transform:uppercase; letter-spacing:0.5px; }
+
+.page { padding:28px 40px; max-width:1320px; margin:0 auto; animation:fadeIn 0.3s ease; }
+
+/* COVER */
+.cover-hero { display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; margin-bottom:48px; }
+.cover-eyebrow { font-size:11px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--brand); margin-bottom:16px; }
+.cover-title { font-size:44px; font-weight:800; letter-spacing:-1.5px; line-height:1.08; margin-bottom:16px; }
+.cover-title span { color:var(--brand); }
+.cover-sub { font-size:16px; color:var(--text-dim); line-height:1.65; margin-bottom:32px; }
+.cover-stats { display:flex; gap:32px; }
+.stat-val { font-size:30px; font-weight:800; letter-spacing:-1px; color:var(--brand); }
+.stat-lbl { font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-top:3px; font-weight:500; }
+.cover-visual { width:100%; aspect-ratio:1.3; background:linear-gradient(135deg,#F0FDFA,#CCFBF1,#F0FDFA); border-radius:var(--radius-lg); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow:var(--shadow-lg); }
+.cover-features { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.cover-feature { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:22px; box-shadow:var(--shadow-sm); transition:all 0.3s; }
+.cover-feature:hover { box-shadow:var(--shadow-lg); transform:translateY(-3px); }
+.feature-icon { width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:14px; }
+.feature-title { font-size:14px; font-weight:700; margin-bottom:6px; }
+.feature-body { font-size:13px; color:var(--text-dim); line-height:1.6; }
+
+/* INBOX / PIPELINE */
+.two-col { display:grid; grid-template-columns:340px 1fr; gap:20px; height:calc(100vh - 140px); }
+.panel { background:var(--card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; display:flex; flex-direction:column; box-shadow:var(--shadow-sm); }
+.panel-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+.panel-title { font-size:13px; font-weight:700; color:var(--text); }
+.panel-body { flex:1; overflow-y:auto; }
+
+.inbox-item { padding:14px 18px; border-bottom:1px solid var(--border-light); cursor:pointer; transition:background 0.15s; display:flex; gap:12px; align-items:flex-start; }
+.inbox-item:hover { background:#FAFAFA; }
+.inbox-item.active { background:var(--brand-light); }
+.inbox-icon { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.inbox-meta { flex:1; min-width:0; }
+.inbox-from { font-size:13px; font-weight:600; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.inbox-subject { font-size:12px; color:var(--text-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px; }
+.inbox-time { font-size:11px; color:var(--text-muted); margin-top:2px; }
+.inbox-badge { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; padding:2px 7px; border-radius:20px; flex-shrink:0; margin-top:2px; }
+.badge-new { background:var(--brand-light); color:var(--brand); }
+.badge-review { background:var(--amber-bg); color:var(--amber); }
+.badge-done { background:var(--green-bg); color:var(--green); }
+
+/* DOCUMENT DETAIL */
+.doc-view { display:flex; flex-direction:column; height:100%; }
+.doc-header { padding:20px 24px; border-bottom:1px solid var(--border); flex-shrink:0; }
+.doc-title { font-size:16px; font-weight:700; margin-bottom:4px; }
+.doc-meta { font-size:12px; color:var(--text-muted); }
+.doc-tabs { display:flex; gap:0; border-bottom:1px solid var(--border); flex-shrink:0; padding:0 24px; }
+.doc-tab { padding:10px 16px; font-size:13px; font-weight:500; color:var(--text-dim); border-bottom:2px solid transparent; cursor:pointer; transition:all 0.15s; }
+.doc-tab.active { color:var(--brand); border-bottom-color:var(--brand); font-weight:600; }
+.doc-content { flex:1; overflow-y:auto; padding:24px; }
+
+/* EXTRACTION TABLE */
+.extract-table { width:100%; border-collapse:collapse; font-size:13px; }
+.extract-table th { background:#F9FAFB; padding:8px 12px; text-align:left; font-weight:600; color:var(--text-secondary); border-bottom:1px solid var(--border); }
+.extract-table td { padding:10px 12px; border-bottom:1px solid var(--border-light); }
+.extract-table tr:hover { background:#FAFAFA; }
+.extract-confidence { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; padding:3px 8px; border-radius:4px; display:inline-block; }
+.conf-high { background:var(--green-bg); color:var(--green); }
+.conf-med { background:var(--amber-bg); color:var(--amber); }
+.conf-low { background:var(--red-bg); color:var(--red); }
+.extract-source { font-size:11px; color:var(--text-muted); cursor:pointer; text-decoration:underline; }
+.extract-source:hover { color:var(--brand); }
+
+/* FLAGS */
+.flag-card { padding:12px 14px; border-radius:var(--radius-sm); border-left:4px solid; display:flex; gap:12px; margin-bottom:10px; }
+.flag-card.red { background:var(--red-bg); border-left-color:var(--red); }
+.flag-card.amber { background:var(--amber-bg); border-left-color:var(--amber); }
+.flag-card.green { background:var(--green-bg); border-left-color:var(--green); }
+.flag-icon { font-size:18px; flex-shrink:0; }
+.flag-title { font-size:13px; font-weight:700; margin-bottom:2px; }
+.flag-body { font-size:12px; color:var(--text-secondary); line-height:1.5; }
+
+/* PIPELINE */
+.pipeline-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:16px; }
+.pipeline-col { display:flex; flex-direction:column; }
+.pipeline-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px; margin-bottom:12px; transition:all 0.2s; cursor:pointer; }
+.pipeline-card:hover { box-shadow:var(--shadow-md); }
+.pipeline-card-company { font-size:13px; font-weight:700; color:var(--text); }
+.pipeline-card-desc { font-size:12px; color:var(--text-dim); line-height:1.5; margin-top:4px; }
+.pipeline-flag { font-size:11px; font-weight:700; padding:2px 8px; border-radius:4px; display:inline-block; text-transform:uppercase; letter-spacing:0.05em; }
+.flag-critical { background:var(--red-bg); color:var(--red); }
+.flag-review { background:var(--amber-bg); color:var(--amber); }
+.flag-clear { background:var(--green-bg); color:var(--green); }
+.pipeline-age { font-size:11px; color:var(--text-muted); }
+
+/* CHAT */
+.chat-container { display:flex; flex-direction:column; height:100%; background:var(--card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); }
+.chat-header { padding:20px 24px; border-bottom:1px solid var(--border); flex-shrink:0; }
+.chat-header-title { font-size:16px; font-weight:700; margin-bottom:8px; }
+.chat-role-tabs { display:flex; gap:6px; flex-wrap:wrap; }
+.chat-role-tab { padding:5px 12px; background:#F3F4F6; border:none; border-radius:6px; font-size:12px; font-weight:500; cursor:pointer; transition:all 0.2s; color:var(--text-secondary); }
+.chat-role-tab.active { background:var(--brand); color:white; }
+.chat-messages { flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:16px; }
+.chat-message { display:flex; gap:10px; animation:fadeIn 0.3s ease; }
+.chat-message.user { justify-content:flex-end; }
+.chat-avatar { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.chat-bubble { max-width:70%; }
+.chat-message.ai .chat-bubble { background:var(--brand-light); color:var(--text); padding:12px 14px; border-radius:12px; }
+.chat-message.user .chat-bubble { background:var(--brand); color:white; padding:12px 14px; border-radius:12px; }
+.chat-sources { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; font-size:11px; }
+.source-chip { background:rgba(15,118,110,0.15); color:var(--brand); padding:4px 8px; border-radius:4px; font-weight:500; }
+.chat-input-area { padding:16px 20px; border-top:1px solid var(--border); flex-shrink:0; display:flex; gap:8px; }
+.chat-input { flex:1; padding:10px 12px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:13px; font-family:var(--font); }
+.chat-send-btn { padding:10px 16px; background:var(--brand); color:white; border:none; border-radius:var(--radius-sm); cursor:pointer; font-weight:600; font-size:13px; font-family:var(--font); }
+.suggested-prompts { padding:16px 20px; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:8px; flex-shrink:0; }
+.prompt-label { font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-muted); margin-bottom:4px; }
+.prompt-btn { padding:8px 12px; background:#F3F4F6; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:12px; cursor:pointer; text-align:left; transition:all 0.2s; }
+.prompt-btn:hover { background:var(--brand-light); border-color:var(--brand); }
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const INBOX = [
+  {
+    id: 'auth-001',
+    icon: '⚕️',
+    title: 'Prior Authorization Request',
+    from: 'Dr. Marcus Williams',
+    subject: 'Cardiology referral — imaging results missing',
+    time: 'Today, 9:14 AM',
+    badge: 'new',
+    summary: 'Urgent prior auth for cardiology consultation. Patient referred from community physician. Imaging results not yet attached — blocking insurance pre-cert.',
+    extracted: [
+      { field: 'Patient ID', value: 'NH-5847', confidence: 'High' },
+      { field: 'Referring Physician', value: 'Dr. Marcus Williams', confidence: 'High' },
+      { field: 'Specialty', value: 'Cardiology', confidence: 'High' },
+      { field: 'Procedure Code', value: '93000', confidence: 'High' },
+      { field: 'ICD-10', value: 'I10 (Hypertension)', confidence: 'High' },
+      { field: 'Insurance Carrier', value: 'UnitedHealthcare', confidence: 'High' },
+      { field: 'Priority', value: 'Urgent', confidence: 'Medium' },
+      { field: 'Required Documents', value: 'Imaging results, cardiology report', confidence: 'Medium' },
+      { field: 'Compliance Status', value: 'Incomplete', confidence: 'High' },
+    ],
+    flags: [
+      { type: 'red', title: 'Missing Required Documentation', body: 'Imaging results (EKG, echocardiogram) not attached. Pre-cert cannot proceed without these.' },
+      { type: 'amber', title: 'Insurance Pre-cert Window', body: 'Pre-cert authorization window closes in 48 hours. Expedite documentation request.' },
+      { type: 'green', title: 'Patient Eligibility', body: 'Patient eligible under UnitedHealthcare plan. No coverage gaps identified.' },
+    ]
+  },
+  {
+    id: 'form-002',
+    icon: '💊',
+    title: 'Formulary Exception',
+    from: 'Oncology Department',
+    subject: 'Non-preferred drug approval needed',
+    time: 'Today, 8:02 AM',
+    badge: 'review',
+    summary: 'Oncology requesting formulary exception for Keytruda (pembrolizumab) not on preferred tier list. Medical necessity justification required.',
+    extracted: [
+      { field: 'Patient ID', value: 'NH-4621', confidence: 'High' },
+      { field: 'Medication', value: 'Keytruda (pembrolizumab)', confidence: 'High' },
+      { field: 'Indication', value: 'Stage IIIC melanoma', confidence: 'High' },
+      { field: 'Formulary Tier', value: 'Non-Preferred', confidence: 'High' },
+      { field: 'Insurance Carrier', value: 'Blue Cross', confidence: 'High' },
+      { field: 'Requested Action', value: 'Tier Exception', confidence: 'High' },
+      { field: 'Clinical Justification', value: 'Provided', confidence: 'Medium' },
+      { field: 'Specialist Signature', value: 'Pending', confidence: 'Medium' },
+    ],
+    flags: [
+      { type: 'amber', title: 'Medical Necessity Review', body: 'Oncology provided clinical justification. Peer review against formulary guidelines recommended.' },
+      { type: 'amber', title: 'Specialist Signature Missing', body: 'Requesting oncologist signature not yet attached. May delay insurance approval.' },
+      { type: 'green', title: 'Patient Identifiers Valid', body: 'All patient identifiers match system records. No eligibility issues.' },
+    ]
+  },
+  {
+    id: 'path-003',
+    icon: '🔄',
+    title: 'Clinical Pathway Deviation',
+    from: 'Surgery Care Coordination',
+    subject: 'Patient #NH-4892 treatment plan deviation',
+    time: 'Today, 7:45 AM',
+    badge: 'review',
+    summary: 'Orthopedic surgery recommending non-standard treatment pathway for ACL reconstruction. Deviates from Novant standard protocol.',
+    extracted: [
+      { field: 'Patient ID', value: 'NH-4892', confidence: 'High' },
+      { field: 'Condition', value: 'ACL Tear', confidence: 'High' },
+      { field: 'Standard Pathway', value: 'Arthroscopic repair (6-week PT)', confidence: 'High' },
+      { field: 'Proposed Pathway', value: 'Open surgical reconstruction (12-week PT)', confidence: 'High' },
+      { field: 'Surgeon', value: 'Dr. Jennifer Chen', confidence: 'High' },
+      { field: 'Clinical Justification', value: 'Provided', confidence: 'Medium' },
+      { field: 'Cost Impact', value: '+$15,000', confidence: 'High' },
+    ],
+    flags: [
+      { type: 'red', title: 'Pathway Deviation Flagged', body: 'Proposed treatment deviates from standard Novant ACL protocol. Requires quality committee review before approval.' },
+      { type: 'amber', title: 'Cost Impact Analysis', body: 'Proposed pathway adds ~$15,000 vs standard protocol. Justification provided but needs CFO review.' },
+      { type: 'green', title: 'Clinical Evidence Present', body: 'Surgeon provided evidence-based rationale. Complies with clinical documentation standards.' },
+    ]
+  },
+  {
+    id: 'comp-004',
+    icon: '📋',
+    title: 'Compliance Audit Flag',
+    from: 'Medical Records',
+    subject: 'Discharge summary documentation gap',
+    time: 'Yesterday, 4:32 PM',
+    badge: 'done',
+    summary: 'CMS audit flagged missing documentation in discharge summary for patient NH-5103. 72-hour readmission risk evaluation missing.',
+    extracted: [
+      { field: 'Patient ID', value: 'NH-5103', confidence: 'High' },
+      { field: 'Audit Type', value: 'CMS Compliance', confidence: 'High' },
+      { field: 'Issue', value: '72-hour readmission risk assessment missing', confidence: 'High' },
+      { field: 'Discharge Date', value: '2026-04-02', confidence: 'High' },
+      { field: 'Physician', value: 'Dr. Robert Martinez', confidence: 'High' },
+      { field: 'Severity', value: 'Critical', confidence: 'High' },
+      { field: 'Timeline to Cure', value: '24 hours', confidence: 'High' },
+    ],
+    flags: [
+      { type: 'red', title: 'Missing Regulatory Documentation', body: 'Discharge summary missing required 72-hour readmission risk assessment. CMS audit violation.' },
+      { type: 'amber', title: 'Physician Notification Required', body: 'Dr. Martinez must be contacted to complete missing documentation within 24 hours.' },
+      { type: 'green', title: 'System Integration Active', body: 'Medical records system notified. Automated reminder sent to physician.' },
+    ]
+  },
+  {
+    id: 'ref-005',
+    icon: '📤',
+    title: 'Referral Triage',
+    from: 'Community Physician Network',
+    subject: 'Neurology referral — urgency assessment needed',
+    time: 'Yesterday, 2:10 PM',
+    badge: 'new',
+    summary: 'Neurology referral from community physician for patient with migraine history. Urgency level and scheduling needs assessment.',
+    extracted: [
+      { field: 'Patient ID', value: 'NH-5934', confidence: 'High' },
+      { field: 'Referring Provider', value: 'Dr. Sarah Patel (Community)', confidence: 'High' },
+      { field: 'Specialty', value: 'Neurology', confidence: 'High' },
+      { field: 'Condition', value: 'Chronic migraine with aura', confidence: 'High' },
+      { field: 'Insurance Carrier', value: 'Aetna', confidence: 'High' },
+      { field: 'Requested Urgency', value: 'Routine', confidence: 'Medium' },
+      { field: 'Scheduling Availability', value: 'Next 2 weeks preferred', confidence: 'Medium' },
+    ],
+    flags: [
+      { type: 'amber', title: 'Urgency Reassessment Recommended', body: 'Patient history indicates migraine with aura. Clinical guidelines recommend expedited neurology evaluation. Consider escalating from Routine to High Priority.' },
+      { type: 'green', title: 'Insurance Verified', body: 'Aetna coverage verified. No pre-cert required for neurology referral.' },
+      { type: 'green', title: 'Specialty Match Found', body: 'Neurology service available. Multiple appointment slots available within 1 week.' },
+    ]
+  },
+  {
+    id: 'pol-006',
+    icon: '📢',
+    title: 'Policy Update — Telehealth Billing',
+    from: 'Compliance & Billing',
+    subject: 'CMS guidelines update — impact on current cases',
+    time: '3 days ago',
+    badge: 'done',
+    summary: 'Updated CMS guidelines for telehealth billing effective immediately. 47 active telehealth cases may need billing code adjustments.',
+    extracted: [
+      { field: 'Effective Date', value: '2026-04-01', confidence: 'High' },
+      { field: 'Policy Change', value: 'Telehealth billing code expansion', confidence: 'High' },
+      { field: 'Affected Cases', value: '47 active telehealth encounters', confidence: 'High' },
+      { field: 'Coding Impact', value: 'Allow-A codes now reimbursable', confidence: 'High' },
+      { field: 'Revenue Opportunity', value: '+$18,500 estimated', confidence: 'Medium' },
+      { field: 'Compliance Required', value: 'Yes', confidence: 'High' },
+    ],
+    flags: [
+      { type: 'green', title: 'Policy Opportunity Identified', body: 'CMS guideline expansion creates positive revenue impact. 47 cases potentially eligible for upgraded billing codes.' },
+      { type: 'amber', title: 'Chart Audit Required', body: 'Medical necessity documentation must be verified before applying new billing codes to existing cases.' },
+      { type: 'green', title: 'System Integration Ready', body: 'Billing system updated. Automated compliance checks enabled for new telehealth encounters.' },
+    ]
+  }
+];
+
+const AI_SYSTEM = `You are an AI assistant embedded in Novant Health's Clinical Operations Intelligence platform. Novant Health is a large integrated healthcare system across the Southeast managing clinical workflows, patient care coordination, insurance operations, and regulatory compliance. Your role is to help clinical operations staff identify workflow bottlenecks, flag compliance issues, triage clinical cases, and optimize healthcare delivery.
+
+You have access to:
+- Clinical workflow data (referrals, prior authorizations, pathway deviations, compliance flags)
+- Patient eligibility and insurance verification systems
+- Clinical pathway standards and deviations
+- Regulatory compliance databases (CMS, state regulations, accreditation requirements)
+- Staff availability and scheduling systems
+
+Your job is to make clinical operations teams smarter and faster. You flag what matters, suggest actions, and surface compliance risks before they become problems.`;
+
+function Header({ tab, setTab }) {
+  return (
+    <div className="header">
+      <div className="logo">
+        <div className="logo-mark">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+          </svg>
+        </div>
+        <div className="logo-name">Conquer AI</div>
+        <div className="logo-div"></div>
+        <div className="logo-product">Clinical Operations Intelligence</div>
+      </div>
+      <div className="header-right">
+        <div className="nav-tabs">
+          {['Overview', 'Inbox', 'AI Assistant', 'Pipeline'].map(t => (
+            <button key={t} className={`nav-tab ${tab === t ? 'active' : ''}`} onClick={() => setTab(t)}>
+              {t}
+            </button>
+          ))}
+        </div>
+        <div className="indicative-badge">Indicative · Concept Only</div>
+      </div>
+    </div>
+  );
+}
+
+function Overview({ setTab }) {
+  const [activeOutcome, setActiveOutcome] = React.useState(0);
+  const outcomes = [
+    {
+      title: 'Use Cases Identified',
+      stat: '6',
+      desc: 'Prior authorizations, formulary exceptions, pathway deviations, compliance audits, referral triage, policy impacts'
+    },
+    {
+      title: 'Avg Processing Time Reduction',
+      stat: '74%',
+      desc: 'Down from ~4 hours manual review to ~1 hour with AI triage and extraction'
+    },
+    {
+      title: 'Compliance Rate',
+      stat: '99.2%',
+      desc: 'Clinical operations cases processed with zero regulatory violations'
+    },
+    {
+      title: 'Document Types Handled',
+      stat: '12',
+      desc: 'Prior auths, formulary requests, clinical pathways, discharge summaries, referrals, policy updates'
+    }
+  ];
+
+  return (
+    <div className="page">
+      <div className="cover-hero">
+        <div>
+          <div className="cover-eyebrow">Agentic Workflow Automation for Healthcare</div>
+          <div className="cover-title">Clinical <span>Operations</span> Intelligence</div>
+          <div className="cover-sub">
+            Novant Health's AI co-pilot for clinical workflow automation. Triage inbound clinical documents, extract key data, flag compliance issues, and coordinate care pathways — all automatically.
+          </div>
+          <div className="cover-stats">
+            {outcomes.map((o, i) => (
+              <div key={i}>
+                <div className="stat-val">{o.stat}</div>
+                <div className="stat-lbl">{o.title}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="cover-visual">
+          <div style={{fontSize:80,opacity:0.3}}>🏥</div>
+        </div>
+      </div>
+
+      <div className="cover-features">
+        <div className="cover-feature">
+          <div className="feature-icon">📥</div>
+          <div className="feature-title">Intelligent Triage</div>
+          <div className="feature-body">Automatically categorize inbound clinical documents, extract key data fields, identify missing information, and route to the right team.</div>
+        </div>
+        <div className="cover-feature">
+          <div className="feature-icon">🚩</div>
+          <div className="feature-title">Compliance Flagging</div>
+          <div className="feature-body">Detect regulatory violations, documentation gaps, clinical pathway deviations, and insurance pre-cert windows before they become issues.</div>
+        </div>
+        <div className="cover-feature">
+          <div className="feature-icon">💬</div>
+          <div className="feature-title">Conversational AI</div>
+          <div className="feature-body">Ask the platform questions about specific cases, compliance requirements, patient pathways, and get instant answers with cited sources.</div>
+        </div>
+        <div className="cover-feature">
+          <div className="feature-icon">🔄</div>
+          <div className="feature-title">Workflow Orchestration</div>
+          <div className="feature-body">Monitor cases through intake, review, approval, and escalation stages. Track dependencies and handoffs automatically.</div>
+        </div>
+        <div className="cover-feature">
+          <div className="feature-icon">📊</div>
+          <div className="feature-title">Real-Time Visibility</div>
+          <div className="feature-body">Dashboards show pipeline status, compliance metrics, processing times, and bottleneck identification at a glance.</div>
+        </div>
+        <div className="cover-feature">
+          <div className="feature-icon">🤖</div>
+          <div className="feature-title">Human in Loop</div>
+          <div className="feature-body">AI does the reading and flagging. Clinicians and operations staff make all decisions. Trust through transparency.</div>
+        </div>
+      </div>
+
+      <div style={{marginTop:40,paddingTop:32,borderTop:'1px solid var(--border)'}}>
+        <div style={{marginBottom:24}}>
+          <div style={{fontSize:18,fontWeight:700,marginBottom:8}}>See It In Action</div>
+          <div style={{fontSize:13,color:'var(--text-muted)'}}>Navigate to the Inbox, AI Assistant, or Pipeline tabs to see how the platform works.</div>
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:12}}>
+          <button onClick={() => setTab('Inbox')} style={{padding:'14px 18px',background:'white',border:'1px solid var(--border)',borderRadius:'var(--radius)',cursor:'pointer',fontSize:13,fontWeight:600,transition:'all 0.2s'}}>
+            View Inbox
+          </button>
+          <button onClick={() => setTab('AI Assistant')} style={{padding:'14px 18px',background:'white',border:'1px solid var(--border)',borderRadius:'var(--radius)',cursor:'pointer',fontSize:13,fontWeight:600,transition:'all 0.2s'}}>
+            Try AI Assistant
+          </button>
+          <button onClick={() => setTab('Pipeline')} style={{padding:'14px 18px',background:'white',border:'1px solid var(--border)',borderRadius:'var(--radius)',cursor:'pointer',fontSize:13,fontWeight:600,transition:'all 0.2s'}}>
+            View Pipeline
+          </button>
+          <div style={{padding:'14px 18px',background:'var(--brand-light)',border:'1px solid var(--brand)',borderRadius:'var(--radius)',fontSize:13,fontWeight:600,color:'var(--brand)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+            ✓ Clinical Outcomes Focused
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Inbox() {
+  const [selected, setSelected] = useState(INBOX[0]);
+  const [docTab, setDocTab] = useState('AI Summary');
+  const [escalated, setEscalated] = useState({});
+  const [reviewed, setReviewed] = useState({});
+
+  const critCount = selected.flags.filter(f=>f.type==='red').length;
+  const warnCount = selected.flags.filter(f=>f.type==='amber').length;
+  const isClean = critCount===0 && warnCount===0;
+
+  return (
+    <div className="page" style={{padding:0,maxWidth:'100%'}}>
+      <div className="two-col">
+        {/* LEFT: INBOX */}
+        <div className="panel">
+          <div className="panel-header">
+            <div className="panel-title">Inbound Items ({INBOX.length})</div>
+          </div>
+          <div className="panel-body">
+            {INBOX.map(item => {
+              const iCrit = item.flags.filter(f=>f.type==='red').length;
+              const iWarn = item.flags.filter(f=>f.type==='amber').length;
+              const iClean = iCrit===0 && iWarn===0;
+              return (
+                <div
+                  key={item.id}
+                  className={`inbox-item ${selected.id === item.id ? 'active' : ''}`}
+                  onClick={() => setSelected(item)}
+                >
+                  <div className="inbox-icon">{item.icon}</div>
+                  <div className="inbox-meta">
+                    <div className="inbox-from">{item.title}</div>
+                    <div className="inbox-subject">{item.from}</div>
+                    <div className="inbox-time">{item.time}</div>
+                    <div style={{marginTop:4,display:'flex',gap:4,alignItems:'center'}}>
+                      {iCrit > 0 && <span className="inbox-badge" style={{background:'var(--red-bg)',color:'var(--red)'}}>⚠️ {iCrit} flag{iCrit>1?'s':''}</span>}
+                      {iWarn > 0 && <span className="inbox-badge" style={{background:'var(--amber-bg)',color:'var(--amber)'}}>🔔 {iWarn}</span>}
+                      {iClean && <span className="inbox-badge" style={{background:'var(--green-bg)',color:'var(--green)'}}>✓ Clear</span>}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* RIGHT: DOCUMENT VIEW */}
+        {selected && (
+          <div className="panel">
+            <div className="doc-view">
+              <div className="doc-header">
+                <div className="doc-title">{selected.title}</div>
+                <div className="doc-meta">{selected.from} • {selected.time}</div>
+              </div>
+
+              <div className="doc-tabs">
+                {['AI Summary', 'Extracted Data', 'Flags & Actions'].map(t => (
+                  <div
+                    key={t}
+                    className={`doc-tab ${docTab === t ? 'active' : ''}`}
+                    onClick={() => setDocTab(t)}
+                  >
+                    {t}
+                  </div>
+                ))}
+              </div>
+
+              <div className="doc-content">
+                {/* AI SUMMARY TAB */}
+                {docTab === 'AI Summary' && (
+                  <div>
+                    <div style={{
+                      padding:'12px 14px', background:'var(--brand-light)', border:'1px solid rgba(15,118,110,0.2)',
+                      borderRadius:'var(--radius-sm)', marginBottom:16, fontSize:13,
+                      color:'var(--text)', lineHeight:1.6
+                    }}>
+                      <strong style={{color:'var(--brand)'}}>AI Summary:</strong> {selected.summary}
+                    </div>
+                    <div style={{fontSize:12,color:'var(--text-muted)',lineHeight:1.6}}>
+                      Document automatically triaged and summarized. Next steps: Review extracted data and flags below.
+                    </div>
+                  </div>
+                )}
+
+                {/* EXTRACTED DATA TAB */}
+                {docTab === 'Extracted Data' && (
+                  <div>
+                    <div style={{
+                      padding:'10px 14px', background:'#F9FAFB', border:'1px solid var(--border)',
+                      borderRadius:'var(--radius-sm)', marginBottom:16, fontSize:12,
+                      color:'var(--text-secondary)', lineHeight:1.6
+                    }}>
+                      <strong style={{color:'var(--text)'}}>What the AI extracted:</strong> All fields below were automatically pulled from the document. Confidence scores show extraction quality. All extracted data flows directly to clinical operations systems.
+                    </div>
+                    <table className="extract-table">
+                      <thead>
+                        <tr>
+                          <th>Field</th>
+                          <th>Extracted Value</th>
+                          <th>Confidence</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {selected.extracted.map((row, i) => (
+                          <tr key={i}>
+                            <td style={{fontWeight:600}}>{row.field}</td>
+                            <td>{row.value}</td>
+                            <td>
+                              <span className={`extract-confidence conf-${row.confidence === 'High' ? 'high' : row.confidence === 'Medium' ? 'med' : 'low'}`}>
+                                {row.confidence}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <div style={{marginTop:12,fontSize:12,color:'var(--text-muted)',lineHeight:1.6}}>
+                      All {selected.extracted.length} fields extracted automatically. No manual data entry. These values flow directly to the clinical operations system.
+                    </div>
+                  </div>
+                )}
+
+                {/* FLAGS & ACTIONS TAB */}
+                {docTab === 'Flags & Actions' && (
+                  <div>
+                    <div style={{
+                      padding:'10px 14px', background:'#F9FAFB', border:'1px solid var(--border)',
+                      borderRadius:'var(--radius-sm)', marginBottom:16, fontSize:12,
+                      color:'var(--text-secondary)', lineHeight:1.6
+                    }}>
+                      <strong style={{color:'var(--text)'}}>How flags work:</strong> The AI compares every extracted field against Novant's clinical standards, insurance guidelines, and CMS regulations. Anything that deviates is flagged here — automatically, before anyone reviews the document.
+                    </div>
+
+                    {selected.flags.map((flag,i) => (
+                      <div key={i} className={`flag-card ${flag.type}`} style={{marginBottom:10}}>
+                        <div className="flag-icon">{flag.type==='red'?'🚨':flag.type==='amber'?'⚠️':'✅'}</div>
+                        <div style={{flex:1}}>
+                          <div className="flag-title">{flag.title}</div>
+                          <div className="flag-body">{flag.body}</div>
+                          {flag.type==='red' && !escalated[`${selected.id}-${i}`] && (
+                            <button onClick={()=>setEscalated(e=>({...e,[`${selected.id}-${i}`]:true}))} style={{
+                              marginTop:10,padding:'6px 14px',background:'var(--red)',color:'white',
+                              border:'none',borderRadius:'var(--radius-sm)',fontSize:12,fontWeight:600,
+                              fontFamily:'var(--font)',cursor:'pointer'
+                            }}>Escalate to Clinical Team →</button>
+                          )}
+                          {escalated[`${selected.id}-${i}`] && (
+                            <div style={{marginTop:10,fontSize:12,color:'var(--green)',fontWeight:600}}>✓ Escalated — clinical team notified</div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+
+                    <div style={{marginTop:20,padding:'14px 16px',background:'#F9FAFB',border:'1px solid var(--border)',borderRadius:'var(--radius-sm)',fontSize:12,color:'var(--text-secondary)',lineHeight:1.6}}>
+                      <strong style={{color:'var(--text)'}}>Human in the loop: </strong>The AI raises the flags. Your clinical operations team makes the calls. No document is actioned without human sign-off — the AI's job is to make sure nothing gets missed.
+                    </div>
+
+                    <div style={{marginTop:16,display:'flex',gap:10}}>
+                      {!reviewed[selected.id]
+                        ? <button onClick={()=>setReviewed(r=>({...r,[selected.id]:true}))} style={{flex:1,padding:'11px 0',background:'var(--text)',color:'white',border:'none',borderRadius:'var(--radius-sm)',fontWeight:600,fontSize:14,fontFamily:'var(--font)',cursor:'pointer'}}>Mark as Reviewed ✓</button>
+                        : <div style={{flex:1,padding:'11px 0',background:'var(--green-bg)',border:'1px solid rgba(16,185,129,0.2)',borderRadius:'var(--radius-sm)',fontWeight:600,fontSize:14,color:'var(--green)',textAlign:'center'}}>✓ Reviewed — logged with timestamp</div>
+                      }
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+const PIPELINE_RICH = {
+  'Intake': {
+    desc: 'Documents received — AI triage in progress',
+    color: 'var(--brand)',
+    aiRole: 'Extracting & categorizing automatically',
+    cards: [
+      { case:'NH-5847: Prior Auth', desc:'Cardiology referral — imaging missing', flag:'critical', flagLabel:'1 Critical', blocker:'Imaging results required for insurance pre-cert', age:'Today, 9:14 AM' },
+      { case:'NH-5934: Neurology Referral', desc:'Community physician referral — urgency review needed', flag:'warn', flagLabel:'In Triage', blocker:'Consider escalating to high priority based on migraine with aura history', age:'Yesterday, 2:10 PM' },
+      { case:'NH-4621: Formulary Exception', desc:'Oncology drug — non-preferred tier', flag:'warn', flagLabel:'Awaiting Review', blocker:'Medical necessity documentation in progress', age:'Today, 8:02 AM' },
+    ]
+  },
+  'AI Review': {
+    desc: 'AI extraction & flagging complete',
+    color: 'var(--brand)',
+    aiRole: 'Flagged issues & extracted data ready for human review',
+    cards: [
+      { case:'NH-4892: Pathway Deviation', desc:'ACL reconstruction — non-standard protocol', flag:'critical', flagLabel:'Quality Review', blocker:'Treatment plan deviates from Novant standard — requires quality committee approval', age:'Today, 7:45 AM' },
+      { case:'NH-5103: Compliance Gap', desc:'Discharge summary — CMS documentation missing', flag:'critical', flagLabel:'Urgent', blocker:'72-hour readmission risk assessment missing — regulatory violation', age:'Yesterday, 4:32 PM' },
+    ]
+  },
+  'Human Review': {
+    desc: 'Clinical team reviewing & deciding',
+    color: 'var(--amber)',
+    aiRole: 'AI summary & risk flags included in review pack',
+    cards: [
+      { case:'Policy Update: Telehealth', desc:'CMS billing code expansion — 47 cases affected', flag:'clear', flagLabel:'Compliance', blocker:null, age:'3 days ago' },
+      { case:'NH-5001: Standard Case', desc:'Routine prior authorization — all data complete', flag:'clear', flagLabel:'Clear to Process', blocker:null, age:'2 days ago' },
+    ]
+  },
+  'Approved': {
+    desc: 'Approved & in implementation',
+    color: 'var(--green)',
+    aiRole: 'Case data logged to EHR automatically',
+    cards: [
+      { case:'NH-4750: Prior Auth', desc:'Orthopedic consultation approved', flag:'clear', flagLabel:'Processed', blocker:null, age:'5 days ago' },
+      { case:'NH-4600: Formulary Exception', desc:'Cardiology medication exception approved', flag:'clear', flagLabel:'Processed', blocker:null, age:'6 days ago' },
+      { case:'NH-4450: Standard Referral', desc:'Radiology referral approved & scheduled', flag:'clear', flagLabel:'Processed', blocker:null, age:'1 week ago' },
+      { case:'NH-4300: Prior Auth', desc:'Specialty imaging approved & patient notified', flag:'clear', flagLabel:'Processed', blocker:null, age:'1 week ago' },
+    ]
+  },
+  'Escalated': {
+    desc: 'Complex cases requiring escalation',
+    color: 'var(--red)',
+    aiRole: 'AI flags escalation — leadership team decides',
+    cards: [
+      { case:'NH-5120: High-Value Case', desc:'$500k+ treatment protocol deviation', flag:'critical', flagLabel:'Leadership', blocker:'CFO & Chief Clinical Officer sign-off required before proceeding', age:'2 days ago' },
+    ]
+  },
+};
+
+function Pipeline() {
+  const [expanded, setExpanded] = useState(null);
+
+  const totalCases = 19;
+  const flaggedCases = 8;
+  const avgProcessTime = '< 1 hr';
+
+  return (
+    <div className="page">
+      <div style={{marginBottom:24}}>
+        <div style={{fontSize:22,fontWeight:800,letterSpacing:-0.5,marginBottom:4}}>Clinical Operations Pipeline</div>
+        <div style={{fontSize:13,color:'var(--text-muted)'}}>Every inbound clinical case — AI-triaged, flagged, and tracked from intake through approval</div>
+      </div>
+
+      <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:12,marginBottom:24}}>
+        {[
+          { label:'Total cases in pipeline', val:totalCases, sub:'24-48 hour processing time', color:'var(--text)', bg:'white' },
+          { label:'Cases with AI flags', val:flaggedCases, sub:'Require clinical review before proceeding', color:'var(--red)', bg:'var(--red-bg)' },
+          { label:'Avg processing time', val:avgProcessTime, sub:'Down from ~4 hours manually', color:'var(--green)', bg:'var(--green-bg)' },
+          { label:'Compliance rate', val:'99.2%', sub:'Zero regulatory violations this month', color:'var(--purple)', bg:'var(--purple-bg)' },
+        ].map((s,i) => (
+          <div key={i} style={{background:s.bg,border:'1px solid var(--border)',borderRadius:'var(--radius)',padding:'18px 20px',boxShadow:'var(--shadow-sm)'}}>
+            <div style={{fontSize:11,fontWeight:700,textTransform:'uppercase',letterSpacing:'0.07em',color:'var(--text-muted)',marginBottom:6}}>{s.label}</div>
+            <div style={{fontSize:26,fontWeight:800,letterSpacing:-0.8,color:s.color,marginBottom:3}}>{s.val}</div>
+            <div style={{fontSize:12,color:'var(--text-muted)'}}>{s.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{
+        display:'flex',alignItems:'center',gap:10,padding:'10px 16px',
+        background:'var(--green-bg)',border:'1px solid rgba(16,185,129,0.2)',
+        borderRadius:'var(--radius-sm)',marginBottom:20,fontSize:13,color:'var(--text-secondary)'
+      }}>
+        <span style={{fontSize:15}}>🤖</span>
+        <span><strong style={{color:'var(--green)'}}>What the AI does here:</strong> Every case below was automatically categorized and flagged when it arrived — no manual sorting. Your clinical operations team focuses on making decisions, not processing documents.</span>
+      </div>
+
+      <div className="pipeline-grid" style={{alignItems:'start'}}>
+        {Object.entries(PIPELINE_RICH).map(([stage, col]) => (
+          <div key={stage} className="pipeline-col">
+            <div style={{marginBottom:10}}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:3}}>
+                <span style={{fontSize:12,fontWeight:700,color:col.color,textTransform:'uppercase',letterSpacing:'0.05em'}}>{stage}</span>
+                <span style={{fontSize:11,fontWeight:700,background:'#F3F4F6',color:'var(--text-secondary)',padding:'2px 8px',borderRadius:20}}>{col.cards.length}</span>
+              </div>
+              <div style={{fontSize:11,color:'var(--text-muted)',lineHeight:1.4}}>{col.desc}</div>
+              <div style={{marginTop:5,fontSize:10,color:col.color,fontWeight:600,display:'flex',alignItems:'center',gap:4}}>
+                <span>🤖</span>{col.aiRole}
+              </div>
+            </div>
+
+            {col.cards.map((card,i) => {
+              const key = `${stage}-${i}`;
+              const isExpanded = expanded===key;
+              return (
+                <div key={i} className="pipeline-card"
+                  onClick={()=>setExpanded(isExpanded?null:key)}
+                  style={{
+                    borderLeft: card.flag==='critical' ? '3px solid var(--red)' :
+                                card.flag==='warn' ? '3px solid var(--amber)' :
+                                '3px solid var(--green)',
+                    cursor:'pointer'
+                  }}>
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:4}}>
+                    <div className="pipeline-card-company" style={{flex:1,marginRight:8}}>{card.case}</div>
+                  </div>
+                  <div className="pipeline-card-desc">{card.desc}</div>
+
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:8}}>
+                    <span className={`pipeline-flag ${card.flag==='critical'?'flag-critical':card.flag==='warn'?'flag-review':'flag-clear'}`}>
+                      {card.flagLabel}
+                    </span>
+                    <span className="pipeline-age">{card.age}</span>
+                  </div>
+
+                  {isExpanded && card.blocker && (
+                    <div style={{
+                      marginTop:10,padding:'10px 12px',
+                      background: card.flag==='critical'?'var(--red-bg)':card.flag==='warn'?'var(--amber-bg)':'var(--green-bg)',
+                      borderRadius:'var(--radius-sm)',fontSize:12,
+                      color:'var(--text-secondary)',lineHeight:1.6,
+                      borderTop:'1px solid var(--border)'
+                    }}>
+                      <div style={{fontWeight:700,marginBottom:3,color:card.flag==='critical'?'var(--red)':card.flag==='warn'?'var(--amber)':'var(--green)'}}>
+                        {card.flag==='critical'?'🚨 Blocker':card.flag==='warn'?'⚠️ Action needed':'✅ No blockers'}
+                      </div>
+                      {card.blocker}
+                    </div>
+                  )}
+                  {isExpanded && !card.blocker && (
+                    <div style={{marginTop:10,padding:'10px 12px',background:'var(--green-bg)',borderRadius:'var(--radius-sm)',fontSize:12,color:'var(--green)',fontWeight:600,borderTop:'1px solid var(--border)'}}>
+                      ✅ No flags — clear to proceed
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+
+      <div style={{marginTop:24,padding:'14px 18px',background:'#F9FAFB',border:'1px solid var(--border)',borderRadius:'var(--radius-sm)',fontSize:12,color:'var(--text-secondary)',lineHeight:1.6}}>
+        <strong style={{color:'var(--text)'}}>For operations leadership:</strong> This pipeline gives you a live view of every case, what's blocking progress, and what the AI has already done. The {flaggedCases} flagged cases require clinical or operational decisions before moving forward. The AI has done the triage — your team makes the calls.
+      </div>
+    </div>
+  );
+}
+
+const ROLE_QUESTIONS = {
+  'Chief Operations Officer': [
+    'Which high-priority cases are blocked waiting for clinical review?',
+    'What is the compliance rate across all cases this month?',
+    'Which document types are causing the most delays?',
+    'What is the cost impact of the pending pathway deviations?',
+  ],
+  'Clinical Operations Manager': [
+    'Summarize the status of all prior authorization cases waiting on documentation.',
+    'Which cases are at risk of missing insurance pre-cert deadlines?',
+    'What are the top 3 bottlenecks in our referral triage workflow?',
+    'Which formulary exceptions need medical necessity review?',
+  ],
+  'Compliance Officer': [
+    'List all cases with regulatory documentation gaps.',
+    'Which cases need CMS compliance review?',
+    'Summarize the audit findings from the last 7 days.',
+    'Draft a compliance summary for the audit trail.',
+  ],
+  'Care Coordinator': [
+    'What are the next steps for the prior auth cases awaiting imaging?',
+    'Which referrals are ready to be scheduled?',
+    'Summarize the patient pathway recommendations for the cardiology case.',
+    'What are the insurance coverage questions for the oncology case?',
+  ],
+};
+
+const DATA_SOURCES = [
+  { icon:'📥', label:'Inbox', desc:'6 cases received today, all AI-triaged' },
+  { icon:'📋', label:'Data Extraction', desc:'54 fields extracted across today\'s cases' },
+  { icon:'⚕️', label:'Clinical Standards', desc:'Novant standard pathways & best practices' },
+  { icon:'📋', label:'Compliance DB', desc:'CMS, state, and accreditation requirements' },
+  { icon:'🏥', label:'Case Pipeline', desc:'19 active cases, various stages' },
+];
+
+function AskAI() {
+  const [messages, setMessages] = useState([
+    {
+      role:'ai',
+      text:"I've reviewed all 6 inbound cases today. The most urgent: NH-5847 prior auth is blocked waiting for imaging results, and the insurance pre-cert window closes in 48 hours. NH-5103 has a critical CMS compliance gap that needs immediate attention from Dr. Martinez. What would you like to focus on?",
+      sources:['Inbox','Compliance DB','Case Pipeline']
+    }
+  ]);
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [activeRole, setActiveRole] = useState('Chief Operations Officer');
+  const messagesEndRef = useRef(null);
+
+  useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior:'smooth' }); }, [messages]);
+
+  const FULL_CONTEXT = AI_SYSTEM + `
+
+Current case load (live data):
+INBOUND CASES TODAY:
+1. NH-5847: Prior Authorization (Cardiology)
+   - Status: Blocked on imaging results
+   - Insurance pre-cert window: 48 hours remaining
+   - Action required: Contact referring physician for EKG/echo results
+
+2. NH-4621: Formulary Exception (Oncology)
+   - Status: Awaiting medical necessity review
+   - Medication: Keytruda (non-preferred tier)
+   - Action required: Peer review against formulary guidelines
+
+3. NH-4892: Pathway Deviation (Orthopedic Surgery)
+   - Status: Awaiting quality committee review
+   - Deviation: Non-standard ACL reconstruction protocol
+   - Impact: +$15,000 vs standard pathway
+
+4. NH-5103: Compliance Gap (Discharge Documentation)
+   - Status: CRITICAL — CMS violation
+   - Issue: 72-hour readmission risk assessment missing
+   - Action required: Immediate physician notification
+
+5. NH-5934: Referral Triage (Neurology)
+   - Status: Urgency assessment recommended
+   - Recommendation: Escalate from Routine to High Priority
+   - Scheduling: Multiple slots available within 1 week
+
+6. Policy Update: CMS Telehealth Billing
+   - Status: Implementation in progress
+   - Impact: +$18,500 estimated revenue opportunity
+   - Affected cases: 47 active telehealth encounters`;
+
+  async function send(text) {
+    setMessages(m => [...m, {role:'user', text}]);
+    setInput('');
+    setLoading(true);
+
+    // Simulate AI response with delay
+    setTimeout(() => {
+      const responses = {
+        'Chief Operations Officer': [
+          {text: 'Currently, 8 cases have AI-flagged issues blocking progress: NH-5847 (imaging missing), NH-4892 (pathway review needed), NH-5103 (compliance), NH-4621 (formulary review), and 4 others. These represent critical path blockers. The compliance rate is 99.2% — one CMS gap in NH-5103 is our only active violation this month. Document type: Discharge summaries are causing the most delays (average 3.2 hours to complete). Estimated compliance cost: $85K if we don\'t resolve NH-5103 within 24 hours.', sources:['Case Pipeline','Compliance DB','Inbox']},
+        ],
+        'Clinical Operations Manager': [
+          {text: 'Prior auth status: 3 cases waiting on documentation (NH-5847 imaging, NH-5934 scheduling, NH-4621 peer review). Pre-cert deadline risk: NH-5847 has 48 hours before insurance window closes. Top bottlenecks: (1) Imaging attachment delays (avg 12 hours), (2) Specialist signature collection (avg 8 hours), (3) Formulary policy interpretation (varies by insurance). Formulary exceptions pending: NH-4621 needs oncology peer review — estimated 4-6 hours. I recommend escalating imaging collection for NH-5847 immediately.', sources:['Inbox','Case Pipeline','Compliance DB']},
+        ],
+        'Compliance Officer': [
+          {text: 'Documentation gaps identified: NH-5103 is critical (missing 72-hour readmission assessment). NH-5847 missing imaging but not yet a compliance issue. All other cases compliant. CMS review status: NH-5103 flagged in active audit. Timeline: Must be resolved within 24 hours. Audit findings summary: 1 critical gap, 0 major violations, 2 minor documentation inconsistencies (non-blocking). I recommend immediate physician notification for NH-5103 with 24-hour deadline.', sources:['Compliance DB','Inbox']},
+        ],
+        'Care Coordinator': [
+          {text: 'Next steps by case: NH-5847 — contact Dr. Williams for imaging attachment (EKG & echo). NH-4621 — oncology peer review proceeding (Dr. Chen estimated 6 hours). NH-5934 — I recommend escalating to high priority based on migraine-with-aura protocol. Referral readiness: NH-5934 can be scheduled immediately; slots available Mon-Fri. Pathway recommendation (NH-4892): Dr. Chen\'s open surgical protocol is clinically justified but requires quality committee sign-off due to cost impact. Insurance coverage: All cases pre-verified except NH-4621 which needs tier exception confirmation.', sources:['Inbox','Clinical Standards','Case Pipeline']},
+        ]
+      };
+
+      const roleResponses = responses[activeRole] || responses['Chief Operations Officer'];
+      const response = roleResponses[Math.floor(Math.random() * roleResponses.length)];
+      setMessages(m => [...m, {...response}]);
+      setLoading(false);
+    }, 800);
+  }
+
+  return (
+    <div className="page" style={{padding:0,maxWidth:'100%',height:'100vh',display:'flex',flexDirection:'column'}}>
+      <div style={{padding:'28px 40px 0',flex:'0 0 auto'}}>
+        <div style={{fontSize:22,fontWeight:800,marginBottom:16}}>Ask the AI</div>
+      </div>
+
+      <div style={{display:'grid',gridTemplateColumns:'1fr 320px',gap:20,flex:1,padding:'0 40px 28px',minHeight:0}}>
+        <div className="chat-container">
+          <div className="chat-header">
+            <div className="chat-header-title">Clinical Case Analysis</div>
+            <div className="chat-role-tabs">
+              {Object.keys(ROLE_QUESTIONS).map(role => (
+                <button key={role} className={`chat-role-tab ${activeRole === role ? 'active' : ''}`} onClick={() => setActiveRole(role)}>
+                  {role.split(' ')[0]}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="chat-messages">
+            {messages.map((msg, i) => (
+              <div key={i} className={`chat-message ${msg.role}`}>
+                <div className="chat-avatar">{msg.role==='ai'?'🤖':'👤'}</div>
+                <div>
+                  <div className="chat-bubble">{msg.text}</div>
+                  {msg.sources && (
+                    <div className="chat-sources">
+                      {msg.sources.map(s => <div key={s} className="source-chip">{s}</div>)}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+            {loading && (
+              <div className="chat-message ai">
+                <div className="chat-avatar">🤖</div>
+                <div className="chat-bubble" style={{opacity:0.6}}>Analyzing cases...</div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <div className="chat-input-area">
+            <input
+              type="text"
+              className="chat-input"
+              placeholder="Ask about a case, compliance, or workflow..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && input && send(input)}
+              disabled={loading}
+            />
+            <button className="chat-send-btn" onClick={() => input && send(input)} disabled={loading}>
+              {loading ? '⏳' : '→'}
+            </button>
+          </div>
+        </div>
+
+        <div style={{display:'flex',flexDirection:'column',gap:12,minHeight:0}}>
+          <div style={{fontSize:13,fontWeight:700,color:'var(--text)'}}>Suggested for {activeRole.split(' ')[0]}</div>
+          <div style={{flex:1,overflow:'y',display:'flex',flexDirection:'column',gap:8}}>
+            {ROLE_QUESTIONS[activeRole].map((q, i) => (
+              <button key={i} className="prompt-btn" onClick={() => send(q)}>
+                {q}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [tab, setTab] = useState('Overview');
+
+  return (
+    <div>
+      <Header tab={tab} setTab={setTab} />
+      {tab === 'Overview' && <Overview setTab={setTab} />}
+      {tab === 'Inbox' && <Inbox />}
+      {tab === 'AI Assistant' && <AskAI />}
+      {tab === 'Pipeline' && <Pipeline />}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+</body>
+</html>

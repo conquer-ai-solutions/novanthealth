@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novant Health — Whiteboard Prep Briefing</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+ --brand: #0F766E;
+ --brand-dk:#0D5F5A;
+ --green: #059669;
+ --red: #DC2626;
+ --amber: #D97706;
+ --purple: #7C3AED;
+ --teal: #0D9488;
+ --text-1: #111111;
+ --text-2: #555555;
+ --text-3: #999999;
+ --border: #E5E5E5;
+ --bg-alt: #F7F7F6;
+ --nav-h: 48px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+ font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+ font-size: 16px;
+ line-height: 1.7;
+ color: var(--text-1);
+ background: #fff;
+}
+
+nav {
+ position: sticky;
+ top: 0;
+ z-index: 100;
+ background: #fff;
+ border-bottom: 1px solid var(--border);
+ height: var(--nav-h);
+ display: flex;
+ align-items: center;
+ padding: 0 32px;
+ gap: 0;
+}
+
+.nav-logo { display: flex; align-items: center; gap: 7px; margin-right: 28px; flex-shrink: 0; text-decoration: none; }
+.nav-logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand); }
+.nav-logo-text { font-size: 13px; font-weight: 700; color: var(--text-1); letter-spacing: -0.01em; }
+.nav-divider { width: 1px; height: 20px; background: var(--border); margin: 0 20px; flex-shrink: 0; }
+.nav-links { display: flex; align-items: center; gap: 0; flex: 1; overflow-x: auto; scrollbar-width: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-link { font-size: 13px; font-weight: 500; color: var(--text-2); text-decoration: none; padding: 0 14px; height: var(--nav-h); display: flex; align-items: center; border-bottom: 2px solid transparent; white-space: nowrap; transition: color 0.1s, border-color 0.1s; }
+.nav-link:hover { color: var(--text-1); }
+.nav-link.active { color: var(--text-1); border-bottom-color: var(--brand); font-weight: 600; }
+.nav-internal { margin-left: auto; flex-shrink: 0; background: var(--text-1); color: #fff; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 12px; border-radius: 3px; }
+
+.content-wrap { max-width: 900px; margin: 0 auto; padding: 0 40px; }
+.section { padding: 72px 0 80px; border-bottom: 1px solid var(--border); }
+.section.alt { background: var(--bg-alt); }
+.section.dark { background: var(--text-1); color: #fff; }
+.section.dark * { border-color: rgba(255,255,255,0.1); }
+
+.section-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); margin-bottom: 16px; font-family: 'Courier New', monospace; }
+.section.dark .section-eyebrow { color: #6EE7B7; }
+.section-headline { font-size: 40px; font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; color: var(--text-1); margin-bottom: 12px; }
+.section.dark .section-headline { color: #fff; }
+.section-sub { font-size: 16px; color: var(--text-2); margin-bottom: 40px; max-width: 640px; }
+.section.dark .section-sub { color: rgba(255,255,255,0.55); }
+
+.hero { padding: 56px 0 64px; border-bottom: 1px solid var(--border); }
+.hero-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); font-family: 'Courier New', monospace; margin-bottom: 20px; }
+.hero-headline { font-size: 52px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.08; color: var(--text-1); margin-bottom: 14px; }
+.hero-sub { font-size: 18px; color: var(--text-2); max-width: 580px; }
+.hero-meta { display: flex; gap: 24px; margin-top: 28px; flex-wrap: wrap; }
+.hero-meta-item { font-size: 13px; color: var(--text-3); }
+.hero-meta-item strong { color: var(--text-1); font-weight: 600; }
+
+.info-card { border: 1px solid var(--border); border-radius: 6px; padding: 24px 28px; margin-bottom: 12px; background: #fff; }
+.info-card-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); font-family: 'Courier New', monospace; margin-bottom: 12px; }
+.info-card-label.red { color: var(--red); }
+.info-card-label.amber { color: var(--amber); }
+.info-card-label.brand { color: var(--brand); }
+.info-card-label.green { color: var(--green); }
+.info-card p { font-size: 15px; color: var(--text-1); margin-bottom: 10px; }
+.info-card p:last-child { margin-bottom: 0; }
+.info-card p em { font-style: italic; color: var(--green); }
+
+.hook-block { border: 1px solid var(--border); border-radius: 6px; padding: 18px 22px; margin-bottom: 8px; font-size: 14px; line-height: 1.65; background: #fff; }
+.hook-block .hook-label { font-weight: 800; color: var(--text-1); display: block; margin-bottom: 5px; }
+.hook-block.warn { border-left: 3px solid var(--amber); }
+.hook-block.warn .hook-label { color: var(--amber); }
+.hook-block.danger { border-left: 3px solid var(--red); }
+.hook-block.danger .hook-label { color: var(--red); }
+.hook-block.good { border-left: 3px solid var(--green); }
+.hook-block.good .hook-label { color: var(--green); }
+.hook-block.info { border-left: 3px solid var(--brand); }
+.hook-block.info .hook-label { color: var(--brand); }
+
+.accordion { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px; overflow: hidden; }
+.accordion-trigger { display: flex; align-items: center; gap: 12px; padding: 14px 20px; cursor: pointer; background: #fff; border: none; width: 100%; text-align: left; font-size: 14px; font-weight: 600; color: var(--text-1); transition: background 0.1s; }
+.accordion-trigger:hover { background: var(--bg-alt); }
+.accordion-arrow { font-size: 10px; color: var(--text-3); transition: transform 0.15s; flex-shrink: 0; margin-left: auto; }
+.accordion-arrow.open { transform: rotate(90deg); }
+.acc-type { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; flex-shrink: 0; font-family: 'Courier New', monospace; }
+.acc-type.ask { background: #ECFDF5; color: var(--green); }
+.acc-type.show { background: #FEF2F2; color: var(--brand); }
+.acc-type.deep { background: #F5F3FF; color: var(--purple); }
+.acc-type.critical { background: #FEF2F2; color: var(--red); }
+.acc-type.warn { background: #FFFBEB; color: var(--amber); }
+.accordion-body { padding: 20px 24px; border-top: 1px solid var(--border); background: #fff; display: none; font-size: 14px; color: var(--text-2); line-height: 1.7; }
+.accordion-body.open { display: block; }
+.accordion-body p { margin-bottom: 10px; }
+.accordion-body p:last-child { margin-bottom: 0; }
+.accordion-body strong { color: var(--text-1); font-weight: 600; }
+.accordion-body ul { margin: 8px 0 10px 18px; }
+.accordion-body li { margin-bottom: 6px; }
+
+.people-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+@media (min-width: 700px) { .people-grid { grid-template-columns: repeat(4, 1fr); } }
+.person-card { border: 1px solid var(--border); border-radius: 6px; padding: 18px 20px; background: #fff; }
+.person-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--text-1); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+.person-avatar.brand { background: var(--brand); }
+.person-name { font-size: 14px; font-weight: 700; color: var(--text-1); margin-bottom: 2px; }
+.person-role { font-size: 11px; color: var(--teal); margin-bottom: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.person-role.amber { color: var(--amber); }
+.person-role.brand { color: var(--brand); }
+.person-body { font-size: 12px; color: var(--text-2); line-height: 1.6; }
+
+.stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 12px; }
+.stat-cell { padding: 20px 18px; border-right: 1px solid var(--border); text-align: center; }
+.stat-cell:last-child { border-right: none; }
+.stat-num { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; color: var(--text-1); font-family: 'Courier New', monospace; margin-bottom: 4px; }
+.stat-num.green { color: var(--green); }
+.stat-num.amber { color: var(--amber); }
+.stat-num.brand { color: var(--brand); }
+.stat-lbl { font-size: 11px; color: var(--text-2); font-weight: 500; }
+
+.opp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+.opp-card { border: 1px solid var(--border); border-radius: 6px; padding: 24px 28px; background: #fff; }
+.opp-card-num { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brand); font-family: 'Courier New', monospace; margin-bottom: 8px; }
+.opp-card-title { font-size: 16px; font-weight: 700; color: var(--text-1); margin-bottom: 8px; }
+.opp-card-body { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+.opp-card-body strong { color: var(--text-1); }
+.opp-card.primary { border-color: var(--brand); border-width: 2px; }
+.opp-card.primary .opp-card-num { color: var(--brand); }
+
+blockquote { border-left: 3px solid var(--brand); padding: 12px 20px; margin: 16px 0; background: #FAFAFA; font-size: 14px; color: var(--text-2); font-style: italic; border-radius: 0 6px 6px 0; }
+blockquote cite { display: block; margin-top: 8px; font-size: 12px; color: var(--text-3); font-style: normal; font-weight: 600; }
+
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.tl-item { display: flex; gap: 20px; padding-bottom: 28px; position: relative; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 28px; }
+.tl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--brand); border: 2px solid #fff; outline: 1px solid var(--brand); flex-shrink: 0; margin-top: 5px; }
+.tl-dot.green { background: var(--green); outline-color: var(--green); }
+.tl-dot.amber { background: var(--amber); outline-color: var(--amber); }
+.tl-line { width: 1px; flex: 1; background: var(--border); margin-top: 4px; }
+.tl-item:last-child .tl-line { display: none; }
+.tl-date { font-size: 11px; color: var(--text-3); font-family: 'Courier New', monospace; font-weight: 600; white-space: nowrap; padding-top: 3px; min-width: 80px; flex-shrink: 0; }
+.tl-content { flex: 1; padding-top: 2px; }
+.tl-title { font-size: 14px; font-weight: 700; color: var(--text-1); margin-bottom: 4px; }
+.tl-body { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+
+.staircase { width: 100%; border-collapse: collapse; font-size: 14px; }
+.staircase th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); border-bottom: 1px solid var(--border); }
+.staircase td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.staircase tr:last-child td { border-bottom: none; }
+.staircase tr:hover td { background: var(--bg-alt); }
+.phase-badge { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 3px; font-family: 'Courier New', monospace; }
+.phase-badge.p1 { background: #EEF2FF; color: var(--purple); }
+.phase-badge.p2 { background: #ECFDF5; color: var(--green); }
+.phase-badge.disc { background: #FEF2F2; color: var(--brand); }
+
+footer { padding: 40px; text-align: center; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-3); }
+footer strong { color: var(--text-2); }
+</style>
+</head>
+<body>
+
+<nav>
+ <a class="nav-logo" href="#">
+ <div class="nav-logo-dot"></div>
+ <span class="nav-logo-text">Conquer AI</span>
+ </a>
+ <div class="nav-divider"></div>
+ <div class="nav-links">
+ <a class="nav-link active" href="#account">Account</a>
+ <a class="nav-link" href="#room">The Room</a>
+ <a class="nav-link" href="#use-cases">Use Cases</a>
+ <a class="nav-link" href="#playbook">Whiteboard Playbook</a>
+ <a class="nav-link" href="#watchouts">Watch-Outs</a>
+ <a class="nav-link" href="#history">History</a>
+ </div>
+ <a href="novant-session.html" target="_blank" style="margin-left:8px;flex-shrink:0;background:var(--text-1);color:#fff;font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;padding:6px 14px;border-radius:4px;text-decoration:none;">Session Runner →</a>
+ <a href="novant-demo.html" target="_blank" style="margin-left:6px;flex-shrink:0;background:var(--brand);color:#fff;font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;padding:6px 14px;border-radius:4px;text-decoration:none;">View Demo →</a>
+ <div class="nav-internal">Internal · Confidential</div>
+</nav>
+
+<div class="section" id="top">
+ <div class="content-wrap">
+ <div class="hero">
+ <div class="hero-eyebrow">Whiteboard Prep · Wed 8 April 2026 · 3:00 – 3:50 pm BST</div>
+ <h1 class="hero-headline">Novant Health</h1>
+ <p class="hero-sub">Pamela is the champion. This session is her initiative — she's sharing their enterprise architecture approach and wants to see where Conquer fits. Come with understanding, not a pitch.</p>
+ <div class="hero-meta">
+ <div class="hero-meta-item"><strong>Location</strong> Microsoft Teams (remote)</div>
+ <div class="hero-meta-item"><strong>Format</strong> Remote · 50 mins</div>
+ <div class="hero-meta-item"><strong>Conquer</strong> Bolaji, Tom, Nauris, Luke (all remote)</div>
+ </div>
+ </div>
+ </div>
+</div>
+
+<div class="section" id="account">
+ <div class="content-wrap">
+ <div class="section-eyebrow">Account Overview</div>
+ <h2 class="section-headline">Who is Novant Health?</h2>
+ <p class="section-sub">Large-scale US healthcare system based in Charlotte, North Carolina. Highly regulated environment. Already matured on AI — they have their own AI model, a Trust & Safety council, an AI committee, and established governance. They're not greenfield. They're building an IT operating model specifically for AI delivery.</p>
+
+ <div class="stat-strip">
+ <div class="stat-cell">
+ <div class="stat-num brand">Healthcare</div>
+ <div class="stat-lbl">Sector</div>
+ </div>
+ <div class="stat-cell">
+ <div class="stat-num brand">Charlotte, NC</div>
+ <div class="stat-lbl">HQ</div>
+ </div>
+ <div class="stat-cell">
+ <div class="stat-num brand">Scale Player</div>
+ <div class="stat-lbl">Size</div>
+ </div>
+ <div class="stat-cell">
+ <div class="stat-num green">AI Mature</div>
+ <div class="stat-lbl">Maturity</div>
+ </div>
+ </div>
+
+ <div class="info-card" style="margin-top:28px;">
+ <div class="info-card-label">Why they matter right now</div>
+ <p>Novant is a large-scale healthcare system with existing AI maturity — they already have their own AI model, a Trust & Safety council, an AI committee, and established governance. They're not greenfield. They're building an IT operating model specifically for AI delivery. The opportunity is to complement what they're building, not replace it. This is about understanding their architecture and identifying where Conquer's capabilities fit within their framework.</p>
+ </div>
+
+ <div class="info-card">
+ <div class="info-card-label">How the intro came about</div>
+ <p>Through Frank Emery, Novant's Chief Legal Officer, who has a relationship with Benjamin Robinson. Warm referral at C-suite level. Onyeka Nchege (CDIO) accepted the meeting on Frank's recommendation. Pamela Wise Martinez (Chief Enterprise Architect) proposed the whiteboarding session after the initial intro call.</p>
+ </div>
+ </div>
+</div>
+
+<div class="section alt" id="room">
+ <div class="content-wrap">
+ <div class="section-eyebrow">The Room</div>
+ <h2 class="section-headline">Who's in the room</h2>
+ <p class="section-sub">Pamela Wise Martinez (Chief Enterprise Architect) is organizing and leading this session. She's the champion. On the intro call, other execs were present, but only Pamela is confirmed for today.</p>
+
+ <div class="people-grid" style="grid-template-columns: repeat(1,1fr); gap: 10px; margin-bottom: 28px;">
+ <div class="person-card">
+ <div class="person-avatar brand">PWM</div>
+ <div class="person-name">Pamela Wise Martinez</div>
+ <div class="person-role brand">Chief Enterprise Architect</div>
+ <div class="person-body">Reports directly to Onyeka. Recently promoted. The champion who organized this session. Most engaged contact. Building the IT operating model for AI. Wants to share their reference architecture and see how Conquer fits. Primary focus: enterprise architecture patterns, not vendor pitches.</div>
+ </div>
+ </div>
+
+ <div class="info-card">
+ <div class="info-card-label red">Context on the intro call</div>
+ <p>Other Novant execs were present on the initial call but are not on today's whiteboard session: <strong>Onyeka Nchege</strong> (EVP & Chief Digital Information Officer — senior sponsor, C-suite, trusted Pamela to run this session). <strong>Vijay Sankararaman</strong> (AI Lead, ~3 months in, cautious/methodical approach to partnerships). Vijay explicitly said "no immediate action" on the intro call, but Pamela is our path in. Vijay is the AI decision-maker — everything we do needs to give Pamela ammunition to bring him along.</p>
+ </div>
+
+ <div class="info-card">
+ <div class="info-card-label brand">Conquer on the call</div>
+ <p><strong>Bolaji</strong>, <strong>Tom</strong> (Thomas Buckley), <strong>Nauris</strong>, <strong>Luke</strong> — all remote. This is a listening session, not a pitch. Let Pamela lead.</p>
+ </div>
+ </div>
+</div>
+
+<div class="section" id="use-cases">
+ <div class="content-wrap">
+ <div class="section-eyebrow">Use Cases</div>
+ <h2 class="section-headline">What they care about</h2>
+ <p class="section-sub">This session is different — Pamela is showing us THEIR architecture. Use cases aren't yet defined. Our job is to listen, understand, and identify where Conquer fits within their framework.</p>
+
+ <div class="opp-grid">
+ <div class="opp-card primary" style="grid-column: 1 / -1;">
+ <div class="opp-card-num">Priority</div>
+ <div class="opp-card-title">Understanding Novant's Enterprise Architecture & AI Operating Model</div>
+ <div class="opp-card-body">
+ <p>Pamela wants to share how they're structuring AI delivery internally, their reference architecture, and their IT operating model for AI. This isn't about selling them something — it's about understanding what they're building and identifying where our capabilities could complement their approach.</p>
+ <p style="margin-top:8px;"><strong>Quote from Pamela:</strong> <em>"I'd like to take you up just on the discussion to flesh out what we're doing from an enterprise architecture perspective because we are adopting and will be publishing a reference model, a reference architecture."</em></p>
+ </div>
+ </div>
+
+ <div class="opp-card">
+ <div class="opp-card-num">Potential Area 1</div>
+ <div class="opp-card-title">AI Pipeline & Delivery Framework</div>
+ <div class="opp-card-body">
+ <p>Pamela is building a consistent playbook for how AI initiatives flow through their pipeline and are delivered to Vijay's team. There may be opportunities for Conquer to accelerate specific use cases within this framework. The key is understanding their pipeline first before proposing solutions.</p>
+ </div>
+ </div>
+
+ <div class="opp-card">
+ <div class="opp-card-num">Potential Area 2</div>
+ <div class="opp-card-title">Agentic AI Layer on Existing Capabilities</div>
+ <div class="opp-card-body">
+ <p>Novant already has their own AI model and identified use cases. The opportunity is adding an agentic layer — automation of workflows, document processing, decision support — on top of what they already have. This is not about replacing their AI, but complementing it.</p>
+ </div>
+ </div>
+ </div>
+ </div>
+</div>
+
+<div class="section alt" id="playbook">
+ <div class="content-wrap">
+ <div class="section-eyebrow">Whiteboard Playbook</div>
+ <h2 class="section-headline">How to run this session</h2>
+ <p class="section-sub">50 minutes. Pamela is driving. Our job is to listen more than talk. This is discovery, not a pitch.</p>
+
+ <div class="accordion">
+ <button class="accordion-trigger" onclick="toggle(this)">
+ <span class="acc-type show">Open</span>
+ Opening — first 5 minutes
+ <span class="accordion-arrow">▶</span>
+ </button>
+ <div class="accordion-body">
+ <p>Don't pitch. Thank Pamela for making this happen and for prioritizing this discussion. <strong>"We've been looking forward to understanding how you're thinking about AI delivery at Novant. We know you're building something thoughtful here — we'd love to hear about it."</strong> Let her lead. Make it clear we're here to learn.</p>
+ </div>
+ </div>
+
+ <div class="accordion">
+ <button class="accordion-trigger" onclick="toggle(this)">
+ <span class="acc-type ask">Ask</span>
+ The questions we need answered
+ <span class="accordion-arrow">▶</span>
+ </button>
+ <div class="accordion-body">
+ <p>These are the gaps we need to fill:</p>
+ <ul>
+ <li><strong>On the reference architecture:</strong> Walk us through the reference architecture you're building — what's the framework, what principles are guiding it? What are the key components?</li>
+ <li><strong>On the AI operating model:</strong> How are you thinking about the pipeline from use case identification to delivery? Where does it flow smoothly and where does it get stuck?</li>
+ <li><strong>On existing AI capabilities:</strong> You mentioned you have your own AI model — what's it doing today, and where do you see its limits? What gaps are you trying to fill?</li>
+ <li><strong>On use case priorities:</strong> Of the use cases you've identified, which ones are most urgent? Which ones are hardest to deliver?</li>
+ <li><strong>On vendor/partner engagement:</strong> How do you see external partners fitting into this model? Where do you need the most help?</li>
+ <li><strong>On Vijay's priorities:</strong> Vijay is building out the AI function — what does his roadmap look like for the next 6-12 months?</li>
+ </ul>
+ </div>
+ </div>
+
+ <div class="accordion">
+ <button class="accordion-trigger" onclick="toggle(this)">
+ <span class="acc-type show">Show</span>
+ What to show — and what not to
+ <span class="accordion-arrow">▶</span>
+ </button>
+ <div class="accordion-body">
+ <p><strong>Only if asked or natural opening:</strong> We can reference regulated industry experience (clinical trials, insurance, banks). This shows we understand compliance and governance challenges. But don't lead with it — let Pamela's conversation guide what's relevant.</p>
+ <p><strong>Don't show:</strong> The FI demo. This isn't a pitch session. If Pamela wants to see how something might work, we can sketch it out or discuss an analogue, but this is not the time for a polished product demo.</p>
+ <p><strong>What to draw on the whiteboard:</strong> Their process flows as we understand them. Ask Pamela to walk us through the architecture and validate our understanding visually. The corrections and details she provides are the signals we need.</p>
+ </div>
+ </div>
+
+ <div class="accordion">
+ <button class="accordion-trigger" onclick="toggle(this)">
+ <span class="acc-type deep">Frame</span>
+ How to frame follow-up engagement
+ <span class="accordion-arrow">▶</span>
+ </button>
+ <div class="accordion-body">
+ <p>This session is Discovery. The next phases would look like:</p>
+
+ <table class="staircase" style="margin-top:16px;">
+ <thead>
+ <tr>
+ <th>Phase</th>
+ <th>Scope</th>
+ <th>Dependency</th>
+ <th>Timeline</th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+ <td><span class="phase-badge disc">Discovery</span></td>
+ <td>Today's session → follow-up with Vijay/Onyeka if Pamela recommends it. Deep dive on architecture and operating model.</td>
+ <td>None from their side</td>
+ <td>Now</td>
+ </tr>
+ <tr>
+ <td><span class="phase-badge p1">Phase 1</span></td>
+ <td>Identify 1-2 specific use cases within their framework. Build a proof of concept demonstrating how Conquer adds value.</td>
+ <td>Use case definition + sample data</td>
+ <td>TBD</td>
+ </tr>
+ <tr>
+ <td><span class="phase-badge p2">Phase 2</span></td>
+ <td>Scale within their AI operating model. Integration with their existing tools and governance.</td>
+ <td>Organizational alignment + deployment resources</td>
+ <td>TBD</td>
+ </tr>
+ </tbody>
+ </table>
+ </div>
+ </div>
+
+ <div class="accordion">
+ <button class="accordion-trigger" onclick="toggle(this)">
+ <span class="acc-type ask">Close</span>
+ How to close the session
+ <span class="accordion-arrow">▶</span>
+ </button>
+ <div class="accordion-body">
+ <p>Don't leave without a defined next step. The close should be: <strong>"Here's what we heard today [summarize key points about their architecture, priorities, operating model]. We'd love to come back with a perspective on where we think we could add the most value within your framework. Would it make sense for us to put something together and share it with you, Vijay, and Onyeka?"</strong></p>
+ <p>The goal is Pamela saying: <strong>"Yes, let me set up a session with Vijay and Onyeka."</strong> That's the mandate for the next conversation. Everything we do in between needs to make her look good to them.</p>
+ </div>
+ </div>
+ </div>
+</div>
+
+<div class="section" id="watchouts">
+ <div class="content-wrap">
+ <div class="section-eyebrow">Watch-Outs</div>
+ <h2 class="section-headline">Where this can go wrong</h2>
+ <p class="section-sub">Risks specific to Novant that can derail momentum.</p>
+
+ <div class="hook-block danger">
+ <span class="hook-label">Don't pitch</span>
+ This is NOT a sales session. Pamela organized this to share their thinking. If we come in selling, we lose the trust that got us here. We're here to listen and understand. Period.
+ </div>
+
+ <div class="hook-block danger">
+ <span class="hook-label">Vijay was cautious</span>
+ He said "no immediate action" on the intro call. Pamela is our path in, but Vijay is the AI decision-maker. Everything we do needs to give Pamela ammunition to bring Vijay along. Make her look good.
+ </div>
+
+ <div class="hook-block warn">
+ <span class="hook-label">Scale concerns may surface</span>
+ Vijay explicitly flagged scale as a concern. Conquer is ~30 people with an 8-person dev team. Be honest about this if asked. Frame it through delivery quality and speed rather than headcount. Healthcare is regulated — they care more about getting it right than just getting it fast.
+ </div>
+
+ <div class="hook-block warn">
+ <span class="hook-label">Be honest about healthcare experience</span>
+ We have regulated industry experience (clinical trials, insurance, banks) but limited direct healthcare deployments. Don't overstate what we've done. The clinical trials and insurance work is relevant but not identical. Be clear about what we know and what we'd need to learn.
+ </div>
+
+ <div class="hook-block warn">
+ <span class="hook-label">Don't over-promise on architecture fit</span>
+ They're publishing a reference architecture. Don't commit to full alignment with something we haven't seen yet. Listen, understand, and come back with a thoughtful perspective on how Conquer complements what they're building.
+ </div>
+
+ <div class="hook-block good">
+ <span class="hook-label">Pamela is your champion — protect the relationship</span>
+ She went out on a limb to set this up after Vijay's cautious response. Make her look good. Give her material she can take back to Onyeka and Vijay. A follow-up memo or perspective that shows we listened and understood is more valuable than a pitch deck.
+ </div>
+
+ <div class="hook-block good">
+ <span class="hook-label">Competitive landscape is crowded</span>
+ ~10 companies are pitching Novant similar things. We need to differentiate through understanding, not volume. Show we listened. The fact that Pamela chose to have a whiteboarding session instead of a demo pitch is significant — we got this right already.
+ </div>
+ </div>
+</div>
+
+<div class="section alt" id="history">
+ <div class="content-wrap">
+ <div class="section-eyebrow">Account History</div>
+ <h2 class="section-headline">How we got here</h2>
+ <p class="section-sub">Warm introduction through C-suite relationship. Pamela took the initiative to organize a deeper conversation.</p>
+
+ <div class="timeline">
+
+ <div class="tl-item">
+ <div class="tl-left"><div class="tl-dot green"></div><div class="tl-line"></div></div>
+ <div class="tl-date">Mar 9, 2026</div>
+ <div class="tl-content">
+ <div class="tl-title">Intro call — Novant leadership</div>
+ <div class="tl-body">Full leadership on: Onyeka Nchege (CDIO), Vijay Sankararaman (AI Lead), Pamela Wise Martinez (Chief Enterprise Architect), plus others. Conquer showed capabilities. Vijay cautious ("no immediate action"). Pamela offered follow-up whiteboarding session.</div>
+ </div>
+ </div>
+
+ <div class="tl-item">
+ <div class="tl-left"><div class="tl-dot green"></div><div class="tl-line"></div></div>
+ <div class="tl-date">Mar 9–13, 2026</div>
+ <div class="tl-content">
+ <div class="tl-title">Pamela's EA reached out</div>
+ <div class="tl-body">David Carter tasked with reaching out to Pamela's EA (Rickie Almond, ralmond@novanthealth.org) to schedule follow-up whiteboarding session.</div>
+ </div>
+ </div>
+
+ <div class="tl-item">
+ <div class="tl-left"><div class="tl-dot green"></div><div class="tl-line"></div></div>
+ <div class="tl-date">Mar 13, 2026</div>
+ <div class="tl-content">
+ <div class="tl-title">Whiteboarding session scheduled</div>
+ <div class="tl-body">Rickie Almond sent Teams invite for Whiteboarding Session on April 8. Nauris created placeholder invite with Conquer team.</div>
+ </div>
+ </div>
+
+ <div class="tl-item">
+ <div class="tl-left"><div class="tl-dot brand"></div></div>
+ <div class="tl-date">Apr 8, 2026</div>
+ <div class="tl-content">
+ <div class="tl-title">Whiteboard · Novant Health</div>
+ <div class="tl-body">Today. 3:00–3:50 PM BST. Microsoft Teams. Pamela organizing. Listen, understand, identify fit. Leave with a mandate to come back with perspective on how Conquer complements their architecture.</div>
+ </div>
+ </div>
+
+ </div>
+ </div>
+</div>
+
+<div class="section dark">
+ <div class="content-wrap">
+ <div class="section-eyebrow">Bottom Line</div>
+ <h2 class="section-headline">What winning looks like</h2>
+ <p class="section-sub">We leave this session understanding their architecture, their priorities, and their pain points well enough to write a compelling follow-up. The metric of success: Pamela says "let me set up a session with Vijay and Onyeka." Everything else is a bonus.</p>
+
+ <div class="info-card" style="background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12);">
+ <div class="info-card-label" style="color: #6EE7B7;">The metric of success</div>
+ <p style="color: rgba(255,255,255,0.8);">Leave this room with a clear understanding of Novant's enterprise architecture and AI operating model. Come back within 1-2 weeks with a perspective document that shows: (1) we understood what they're building, (2) we identified specific areas where Conquer could add value within their framework, and (3) we're not here to replace or over-architect — we're here to complement. If Pamela wants to loop in Vijay and Onyeka to discuss that perspective, we've won.</p>
+ </div>
+ </div>
+ </div>
+</div>
+
+<footer>
+ <p>Novant Health · Whiteboard Prep · Wed 8 April 2026 &nbsp;·&nbsp; <strong>Conquer AI — Internal & Confidential</strong></p>
+</footer>
+
+<script>
+function toggle(btn) {
+ const body = btn.nextElementSibling;
+ const arrow = btn.querySelector('.accordion-arrow');
+ const isOpen = body.classList.contains('open');
+ body.classList.toggle('open', !isOpen);
+ arrow.classList.toggle('open', !isOpen);
+}
+
+const sections = document.querySelectorAll('[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+window.addEventListener('scroll', () => {
+ let current = '';
+ sections.forEach(s => {
+ if (window.scrollY >= s.offsetTop - 80) current = s.id;
+ });
+ navLinks.forEach(a => {
+ a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+ });
+}, { passive: true });
+</script>
+</body>
+</html>
